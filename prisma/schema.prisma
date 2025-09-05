@@ -1,0 +1,58 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid()) // Unique ID for the user
+  name      String   // User's full name
+  email     String   @unique // User's email, must be unique
+  password  String   // Hashed password
+  createdAt DateTime @default(now()) // Timestamp when user was created
+  updatedAt DateTime @updatedAt // Timestamp when user was last updated
+
+  // Relationship: One User can have many ESG Responses
+  esgResponses ESGResponse[]
+}
+
+model ESGResponse {
+  id              String   @id @default(uuid()) // Unique ID for the response
+  userId          String   // Foreign key linking to the User
+  year   Int      // The year this response is for (e.g., 2023)
+  createdAt       DateTime @default(now()) // Timestamp when response was saved
+  updatedAt       DateTime @updatedAt // Timestamp when response was last updated
+
+  // --- Input Metrics ---
+  // Environmental
+  totalElectricityConsumption     Float? // kWh
+  renewableElectricityConsumption Float? // kWh
+  totalFuelConsumption            Float? // liters
+  carbonEmissions                 Float? // T CO2e
+
+  // Social
+  totalEmployees         Int?   // Number of employees
+  femaleEmployees        Int?   // Number of female employees
+  averageTrainingHours   Float? // Average training hours per employee
+  communityInvestment    Float? // INR
+
+  // Governance
+  independentBoardMembers Float? // %
+  hasDataPrivacyPolicy    Boolean? // Yes/No (stored as Boolean)
+  totalRevenue            Float? // INR
+
+  // --- Auto-Calculated Metrics (Stored for easy retrieval/display) ---
+  carbonIntensity       Float? // T CO2e/ INR
+  renewableElectricityRatio Float? // %
+  diversityRatio        Float? // %
+  communitySpendRatio   Float? // %
+
+  // Relationship: Each ESG Response belongs to one User
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([userId, year])
+}
