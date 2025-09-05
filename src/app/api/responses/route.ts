@@ -184,9 +184,8 @@ export async function GET(request: NextRequest) {
         // We can transform the array into this object structure.
         const responseData: { [year: number]: ESGData } = {};
         userResponses.forEach(response => {
-            // Map Prisma fields (snake_case) back to ESGData fields (camelCase) if they differ
-            // In our Prisma schema, they match, so direct assignment works.
-            // Ensure year is treated as a number if needed (Prisma returns it as Int)
+            // Map Prisma fields directly to ESGData fields
+            // This now includes the stored calculated fields fetched from the database
             responseData[response.year] = {
                 // --- Environmental ---
                 totalElectricityConsumption: response.totalElectricityConsumption,
@@ -202,7 +201,7 @@ export async function GET(request: NextRequest) {
                 independentBoardMembers: response.independentBoardMembers,
                 hasDataPrivacyPolicy: response.hasDataPrivacyPolicy,
                 totalRevenue: response.totalRevenue,
-                // --- Calculated ---
+                // --- Stored Calculated Fields ---
                 carbonIntensity: response.carbonIntensity,
                 renewableElectricityRatio: response.renewableElectricityRatio,
                 diversityRatio: response.diversityRatio,

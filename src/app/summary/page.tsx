@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
 import { ESGFormData } from '@/types/esg';
 import CarbonIntensityChart from '@/components/charts/CarbonIntensityChart'; // Example chart component
+import DiversityRatioChart from '@/components/charts/DiversityRatioChart';
+import RenewableElectricityRatioChart from '@/components/charts/RenewableElectricityRatioChart';
+import CommunitySpendRatioChart from '@/components/charts/CommunitySpendRatioChart';
 
 const SummaryPage: React.FC = () => {
     const router = useRouter();
@@ -84,14 +87,29 @@ const SummaryPage: React.FC = () => {
                     {esgData && Object.keys(esgData).length > 0 ? (
                         <div>
                             <p className="text-gray-600 mb-4">Overview of your ESG performance across financial years.</p>
-                            {/* Placeholder for charts and data display */}
-                            <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-                                <CarbonIntensityChart data={esgData} />
+                            {/* --- Charts Section --- */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                {/* Carbon Intensity Chart */}
+                                <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                    <CarbonIntensityChart data={esgData} />
+                                </div>
+
+                                {/* Diversity Ratio Chart */}
+                                <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                    <DiversityRatioChart data={esgData} />
+                                </div>
+
+                                {/* Renewable Electricity Ratio Chart */}
+                                <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                    <RenewableElectricityRatioChart data={esgData} />
+                                </div>
+
+                                {/* Community Spend Ratio Chart */}
+                                <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
+                                    <CommunitySpendRatioChart data={esgData} />
+                                </div>
                             </div>
-                            {/* Placeholder for other charts or data tables */}
-                            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center text-gray-500 mb-8">
-                                Additional charts (Diversity Ratio, Renewable Ratio, etc.) and data tables will be displayed here.
-                            </div>
+                            {/* --- End Charts Section --- */}
                             {/* Placeholder for download button */}
                             <div className="mt-8 flex justify-center">
                                 <button className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm">

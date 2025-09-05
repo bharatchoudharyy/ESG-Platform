@@ -6,6 +6,7 @@ import { ESGFormData, ESGData } from '@/types/esg';
 import { calculateESGMetrics } from '@/utils/esgCalculations';
 import InputField from '@/components/ui/InputField';
 
+
 interface ESGFormProps {
     initialData?: ESGFormData;
     onSubmit: (data: ESGFormData) => void;
@@ -97,11 +98,34 @@ const ESGForm: React.FC<ESGFormProps> = ({ initialData = {}, onSubmit, isSubmitt
         setNewYearError(null);
     };
 
-    const handleRemoveYear = (yearToRemove: number) => {
+    const handleRemoveYear = async (yearToRemove: number) => {
         if (Object.keys(expandedYears).length <= 1) {
             alert("You must have at least one financial year.");
             return;
         }
+
+        // Call the backend API to delete the data ---
+        const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
+        try {
+            const response = await fetch(`/api/responses/${yearToRemove}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                // Handle API errors (e.g., 404 if year data didn't exist, 500 server error)
+                const errorData = await response.json();
+                console.error(`Failed to delete year ${yearToRemove}:`, errorData.error);
+            }
+            // If response is ok (200 or 404), we consider the intent fulfilled.
+        } catch (err: any) {
+            // Handle network errors
+            console.error(`Network error deleting year ${yearToRemove}:`, err);
+        }
+
+
         setExpandedYears((prev) => {
             const newData = { ...prev };
             delete newData[yearToRemove];
@@ -342,8 +366,25 @@ const ESGForm: React.FC<ESGFormProps> = ({ initialData = {}, onSubmit, isSubmitt
             window.scrollTo({ top: 0, behavior: 'smooth' });
             return; // Stop the submission process
         }
-        // If validation passes, proceed with the original onSubmit handler
-        onSubmit(formData);
+
+        // If validation passes, prepare the data including calculated metrics before submitting
+        // Create a copy of formData to avoid mutating the state directly
+        const dataToSend: ESGFormData = {};
+
+        // Iterate through each year's input data
+        Object.entries(formData).forEach(([year, yearData]) => {
+            // Calculate the metrics for this year's data using the utility function
+            const calculatedMetrics = calculateESGMetrics(yearData);
+
+            // Merge the original input data with the calculated metrics
+            // The calculated metrics will overwrite any potentially existing null/undefined placeholders
+            dataToSend[parseInt(year, 10)] = {
+                ...yearData,         // Include all original input fields
+                ...calculatedMetrics // Include the freshly calculated derived fields
+            };
+        });
+        // Proceed with the original onSubmit handler, passing the enriched data
+        onSubmit(dataToSend);
     };
 
     // Get sorted list of years
