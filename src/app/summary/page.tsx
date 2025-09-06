@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
-import { ESGFormData } from '@/types/esg';
+import { ESGFormData, ESGData } from '@/types/esg';
 import CarbonIntensityChart from '@/components/charts/CarbonIntensityChart'; // Example chart component
 import DiversityRatioChart from '@/components/charts/DiversityRatioChart';
 import RenewableElectricityRatioChart from '@/components/charts/RenewableElectricityRatioChart';
@@ -71,11 +71,27 @@ const SummaryPage: React.FC = () => {
         );
     }
 
+    const formatYesNo = (value: boolean | null | undefined): string => {
+        if (value === true) return 'Yes';
+        if (value === false) return 'No';
+        return '-';
+    };
+
     return (
         <Layout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="bg-white shadow rounded-lg p-6">
-                    <h1 className="text-2xl font-bold text-gray-900 mb-6">ESG Summary Dashboard</h1>
+                    {/* Header Section with Title and Download Button */}
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6">
+                        <h1 className="text-2xl font-bold text-gray-900">ESG Summary Dashboard</h1>
+                        {/* Download Button - Positioned Top Right */}
+                        <button
+                            className="mt-2 sm:mt-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm"
+                        // onClick handler will be added later for PDF download
+                        >
+                            Download Summary (PDF)
+                        </button>
+                    </div>
 
                     {error && (
                         <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-md text-sm">
@@ -83,39 +99,82 @@ const SummaryPage: React.FC = () => {
                         </div>
                     )}
 
-                    {/* Conditional rendering based on whether data was fetched */}
                     {esgData && Object.keys(esgData).length > 0 ? (
                         <div>
-                            <p className="text-gray-600 mb-4">Overview of your ESG performance across financial years.</p>
+                            <p className="text-gray-600 mb-6">Overview of your ESG performance across financial years.</p>
+
                             {/* --- Charts Section --- */}
+                            <h2 className="text-xl font-semibold text-gray-800 mt-8 mb-4">Calculated Metrics Trends</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                {/* Carbon Intensity Chart */}
                                 <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                                     <CarbonIntensityChart data={esgData} />
                                 </div>
-
-                                {/* Diversity Ratio Chart */}
                                 <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                                     <DiversityRatioChart data={esgData} />
                                 </div>
-
-                                {/* Renewable Electricity Ratio Chart */}
                                 <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                                     <RenewableElectricityRatioChart data={esgData} />
                                 </div>
-
-                                {/* Community Spend Ratio Chart */}
                                 <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
                                     <CommunitySpendRatioChart data={esgData} />
                                 </div>
                             </div>
                             {/* --- End Charts Section --- */}
-                            {/* Placeholder for download button */}
-                            <div className="mt-8 flex justify-center">
-                                <button className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm">
-                                    Download Summary (PDF)
-                                </button>
+
+                            {/* --- Raw Data Section --- */}
+                            <h2 className="text-xl font-semibold text-gray-800 mt-10 mb-4">Questionnaire Data</h2>
+                            <div className="overflow-x-auto">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Year</th>
+                                            {/* Environmental */}
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Electricity (kWh)</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Renewable Electricity (kWh)</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Fuel (liters)</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Carbon Emissions (T CO2e)</th>
+                                            {/* Social */}
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Employees</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Female Employees</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Avg. Training Hours</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Community Investment (INR)</th>
+                                            {/* Governance */}
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">% Independent Board Members</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Data Privacy Policy</th>
+                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Revenue (INR)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {Object.keys(esgData)
+                                            .map(Number)
+                                            .sort((a, b) => b - a) // Sort years descending
+                                            .map((year) => {
+                                                const data: ESGData = esgData[year] || {};
+                                                return (
+                                                    <tr key={year}>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{year}</td>
+                                                        {/* Environmental */}
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.renewableElectricityConsumption?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalFuelConsumption?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalElectricityConsumption?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.carbonEmissions?.toString() ?? '-'}</td>
+                                                        {/* Social */}
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalEmployees?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.femaleEmployees?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.averageTrainingHours?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.communityInvestment?.toString() ?? '-'}</td>
+                                                        {/* Governance */}
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.independentBoardMembers?.toString() ?? '-'}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{formatYesNo(data.hasDataPrivacyPolicy)}</td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalRevenue?.toString() ?? '-'}</td>
+                                                    </tr>
+                                                );
+                                            })}
+                                    </tbody>
+                                </table>
                             </div>
+                            {/* --- End Raw Data Section --- */}
+
                         </div>
                     ) : (
                         <div className="text-center py-10">
@@ -137,4 +196,4 @@ const SummaryPage: React.FC = () => {
     );
 };
 
-export default SummaryPage;
+export default SummaryPage; 
