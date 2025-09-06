@@ -55,6 +55,9 @@ const LoginPage: React.FC = () => {
                 if (typeof window !== 'undefined' && data.token) {
                     localStorage.setItem('authToken', data.token);
                 }
+                if (data.user?.name) {
+                    localStorage.setItem('userName', data.user.name);
+                }
                 router.push('/questionnaire'); // Update this redirect later
             } else {
                 setError(data.error || 'Login failed. Please try again.');

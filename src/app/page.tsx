@@ -46,15 +46,6 @@ export default function Home() {
               >
                 {isLoggedIn ? "Go to Questionnaire" : "Get Started"}
               </Link>
-              {/* Conditional Secondary Button */}
-              {!isLoggedIn && ( // Only show Login button if not logged in
-                <Link
-                  href="/login"
-                  className="px-8 py-3 border border-teal-600 text-base font-medium rounded-md text-teal-700 bg-transparent hover:bg-teal-50 md:py-4 md:text-lg md:px-10 transition-colors shadow-sm text-center"
-                >
-                  Login
-                </Link>
-              )}
             </div>
           </div>
         </div>
