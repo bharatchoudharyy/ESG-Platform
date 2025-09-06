@@ -121,59 +121,75 @@ const SummaryPage: React.FC = () => {
                             </div>
                             {/* --- End Charts Section --- */}
 
-                            {/* --- Raw Data Section --- */}
+                            {/* --- Raw Data Section (Improved, Year-by-Year) --- */}
                             <h2 className="text-xl font-semibold text-gray-800 mt-10 mb-4">Questionnaire Data</h2>
-                            <div className="overflow-x-auto">
-                                <table className="min-w-full divide-y divide-gray-200">
-                                    <thead className="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Year</th>
-                                            {/* Environmental */}
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Electricity (kWh)</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Renewable Electricity (kWh)</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Fuel (liters)</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Carbon Emissions (T CO2e)</th>
-                                            {/* Social */}
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Employees</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Female Employees</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Avg. Training Hours</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Community Investment (INR)</th>
-                                            {/* Governance */}
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">% Independent Board Members</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Data Privacy Policy</th>
-                                            <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Total Revenue (INR)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className="bg-white divide-y divide-gray-200">
-                                        {Object.keys(esgData)
-                                            .map(Number)
-                                            .sort((a, b) => b - a) // Sort years descending
-                                            .map((year) => {
-                                                const data: ESGData = esgData[year] || {};
-                                                return (
-                                                    <tr key={year}>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{year}</td>
-                                                        {/* Environmental */}
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.renewableElectricityConsumption?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalFuelConsumption?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalElectricityConsumption?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.carbonEmissions?.toString() ?? '-'}</td>
-                                                        {/* Social */}
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalEmployees?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.femaleEmployees?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.averageTrainingHours?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.communityInvestment?.toString() ?? '-'}</td>
-                                                        {/* Governance */}
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.independentBoardMembers?.toString() ?? '-'}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{formatYesNo(data.hasDataPrivacyPolicy)}</td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{data.totalRevenue?.toString() ?? '-'}</td>
-                                                    </tr>
-                                                );
-                                            })}
-                                    </tbody>
-                                </table>
+                            <div className="space-y-8"> {/* Space between year sections */}
+                                {Object.keys(esgData)
+                                    .map(Number)
+                                    .sort((a, b) => b - a) // Sort years descending
+                                    .map((year) => {
+                                        const data: ESGData = esgData[year] || {};
+                                        return (
+                                            <div key={year} className="border border-gray-200 rounded-lg p-5 shadow-sm bg-white">
+                                                <h3 className="text-lg font-medium text-gray-900 mb-4 pb-2 border-b border-gray-200">Financial Year: {year}</h3>
+
+                                                {/* Grid for data points - 1 column on small screens, 2 on medium, 3 on large */}
+                                                <dl className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
+                                                    {/* --- Environmental --- */}
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Total Electricity</dt>
+                                                        <dd className="text-gray-900 text-right">{data.totalElectricityConsumption?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Renewable Electricity</dt>
+                                                        <dd className="text-gray-900 text-right">{data.renewableElectricityConsumption?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Total Fuel</dt>
+                                                        <dd className="text-gray-900 text-right">{data.totalFuelConsumption?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Carbon Emissions</dt>
+                                                        <dd className="text-gray-900 text-right">{data.carbonEmissions?.toString() ?? '-'}</dd>
+                                                    </div>
+
+                                                    {/* --- Social --- */}
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Total Employees</dt>
+                                                        <dd className="text-gray-900 text-right">{data.totalEmployees?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Female Employees</dt>
+                                                        <dd className="text-gray-900 text-right">{data.femaleEmployees?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Avg. Training Hours</dt>
+                                                        <dd className="text-gray-900 text-right">{data.averageTrainingHours?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Community Investment</dt>
+                                                        <dd className="text-gray-900 text-right">{data.communityInvestment?.toString() ?? '-'}</dd>
+                                                    </div>
+
+                                                    {/* --- Governance --- */}
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">% Independent Board</dt>
+                                                        <dd className="text-gray-900 text-right">{data.independentBoardMembers?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Data Privacy Policy</dt>
+                                                        <dd className="text-gray-900 text-right">{formatYesNo(data.hasDataPrivacyPolicy)}</dd>
+                                                    </div>
+                                                    <div className="flex justify-between items-start pb-2 border-b border-gray-100">
+                                                        <dt className="font-medium text-gray-500">Total Revenue</dt>
+                                                        <dd className="text-gray-900 text-right">{data.totalRevenue?.toString() ?? '-'}</dd>
+                                                    </div>
+                                                </dl>
+                                            </div>
+                                        );
+                                    })}
                             </div>
-                            {/* --- End Raw Data Section --- */}
+                            {/* --- End Raw Data Section (Improved, Year-by-Year) --- */}
 
                         </div>
                     ) : (
