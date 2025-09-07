@@ -42,7 +42,6 @@ const formatValueWithUnit = (key: keyof ESGData, value: any): string => {
     return unit ? `${formattedValue} ${unit}` : formattedValue;
 };
 
-
 const addHeader = (doc: jsPDF) => {
     doc.setFontSize(16);
     doc.setFont('helvetica', 'bold');
@@ -65,18 +64,16 @@ const addFooter = (doc: jsPDF) => {
 export const generatePerYearPDF = (yearData: ESGData, year: number) => {
     const doc = new jsPDF();
 
-    // Title Page
+    // Header
     addHeader(doc);
-    doc.setFontSize(24);
+
+    // Title on same page
+    doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(colors.textPrimary);
-    doc.text(`ESG Report for FY ${year}`, 105, 140, { align: 'center' });
-    addFooter(doc);
+    doc.text(`ESG Report for FY ${year}`, 105, 30, { align: 'center' });
 
-    // Data Page
-    doc.addPage();
-    addHeader(doc);
-    let startY = 30;
+    let startY = 45;
 
     const createSectionTable = (title: string, metrics: Array<{ label: string; key: keyof ESGData }>) => {
         // @ts-ignore
@@ -93,10 +90,15 @@ export const generatePerYearPDF = (yearData: ESGData, year: number) => {
             head: [['Metric', 'Value']],
             body: metrics.map(m => [m.label, formatValueWithUnit(m.key, yearData[m.key])]),
             theme: 'grid',
-            headStyles: { fillColor: colors.primary, textColor: [255, 255, 255] },
-            columnStyles: { 0: { fontStyle: 'bold' } },
+            headStyles: { fillColor: colors.primary, textColor: [255, 255, 255], fontStyle: 'bold' },
+            columnStyles: {
+                0: { fontStyle: 'bold', cellWidth: 90 },
+                1: { cellWidth: 'auto' }
+            },
+            tableWidth: 'auto',
             didDrawPage: () => addFooter(doc),
         });
+
         // @ts-ignore
         startY = doc.lastAutoTable.finalY + 12;
     };
@@ -127,19 +129,17 @@ export const generatePerYearPDF = (yearData: ESGData, year: number) => {
         ]
     };
 
-    Object.entries(sections).forEach(([title, metrics]) => createSectionTable(title, metrics as { label: string, key: keyof ESGData }[]));
+    Object.entries(sections).forEach(([title, metrics]) => createSectionTable(title, metrics as any));
 
     addFooter(doc);
     doc.save(`ESG_Report_FY${year}.pdf`);
 };
 
-
-// --- Cumulative PDF Generator ---
+// --- Cumulative PDF Generator (unchanged from your version) ---
 export const generateCumulativePDF = (esgData: ESGFormData) => {
     const doc = new jsPDF();
     const sortedYears = Object.keys(esgData).map(Number).sort((a, b) => b - a);
 
-    // --- Reusable Header and Footer with page count ---
     const addHeaderAndFooter = (docInstance: jsPDF) => {
         addHeader(docInstance);
         addFooter(docInstance);
@@ -185,9 +185,7 @@ export const generateCumulativePDF = (esgData: ESGFormData) => {
         theme: 'grid',
         headStyles: { fillColor: colors.primary, fontStyle: 'bold' },
         columnStyles: { 0: { fontStyle: 'bold' } },
-        didDrawPage: (data) => {
-            addHeaderAndFooter(doc);
-        },
+        didDrawPage: () => addHeaderAndFooter(doc),
     });
 
     addFooter(doc);
