@@ -103,10 +103,6 @@ const QuestionnairePage: React.FC = () => {
     };
 
     const handleRemoveYear = async (yearToRemove: number) => {
-        if (years.length <= 1) {
-            alert("You must have at least one financial year.");
-            return;
-        }
 
         const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
         if (!token) {
@@ -125,11 +121,11 @@ const QuestionnairePage: React.FC = () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error(`Failed to delete year ${yearToRemove}:`, errorData.error);
-                // Optionally alert user
+
             }
         } catch (err: any) {
             console.error(`Network error deleting year ${yearToRemove}:`, err);
-            // Optionally alert user
+
         }
 
         // Update UI state
@@ -281,14 +277,7 @@ const QuestionnairePage: React.FC = () => {
                         />
                     ) : (
                         <div className="text-center py-10">
-                            <p className="text-gray-600 mb-6">No financial years added yet.</p>
-                            <button
-                                type="button"
-                                onClick={handleStartAddYear}
-                                className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm"
-                            >
-                                Add Financial Year's ESG Data
-                            </button>
+                            <p className="text-gray-600">No financial years added yet.</p>
                         </div>
                     )}
                 </div>

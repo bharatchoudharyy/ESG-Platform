@@ -48,6 +48,43 @@ const SignupPage: React.FC = () => {
             return; // Stop submission
         }
 
+        if (formData.password.length < 6) {
+            setError('Password must be at least 6 characters long.');
+            setIsLoading(false);
+            return;
+        }
+
+        const nameRegex = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/; // Starts & ends with letter, contains only letters/spaces
+        if (!nameRegex.test(formData.name.trim())) { // Trim whitespace before testing
+            // Check if it's at least 1 char after trimming and starts/ends correctly
+            const trimmedName = formData.name.trim();
+            if (trimmedName.length === 0) {
+                setError('Full Name is required.');
+                setIsLoading(false);
+                return;
+            }
+            // More specific error messages (optional)
+            if (trimmedName.length > 0 && !/^[a-zA-Z]/.test(trimmedName)) {
+                setError('Full Name must start with a letter.');
+                setIsLoading(false);
+                return;
+            }
+            if (trimmedName.length > 0 && !/[a-zA-Z]$/.test(trimmedName)) {
+                setError('Full Name must end with a letter.');
+                setIsLoading(false);
+                return;
+            }
+            if (trimmedName.length > 0) { // Implies it starts/ends with letter but has invalid chars in between
+                setError('Full Name can only contain letters and spaces.');
+                setIsLoading(false);
+                return;
+            }
+            // Fallback generic message
+            setError('Please enter a valid Full Name (letters and spaces only, starting and ending with a letter).');
+            setIsLoading(false);
+            return;
+        }
+
         try {
             const response = await fetch('/api/auth/signup', {
                 method: 'POST',
