@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import InputField from '@/components/ui/InputField';
@@ -10,7 +10,7 @@ import Button from '@/components/ui/Button';
 
 const LoginPage: React.FC = () => {
     const router = useRouter();
-
+    const searchParams = useSearchParams();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -18,6 +18,7 @@ const LoginPage: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const signupSuccess = searchParams.get('signup_success');
 
     useEffect(() => {
         // Check if the user is already logged in
@@ -74,6 +75,11 @@ const LoginPage: React.FC = () => {
                 {/* The actual card */}
                 <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md"> {/* Card styles remain the same */}
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
+                    {signupSuccess === 'true' && (
+                        <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-md text-sm text-center">
+                            Account created successfully! You can now log in.
+                        </div>
+                    )}
                     {error && <div className="mt-4 p-2 bg-red-100 text-red-700 rounded-md text-sm">{error}</div>}
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                         <InputField

@@ -109,7 +109,7 @@ const SummaryPage: React.FC = () => {
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <h1 className="text-2xl font-bold text-gray-900">ESG Summary Dashboard</h1>
                         <button
-                            className="mt-2 sm:mt-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm"
+                            className="mt-2 sm:mt-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
                         // onClick handler will be added later for PDF download
                         >
                             Download Summary (PDF)
@@ -308,7 +308,7 @@ const SummaryPage: React.FC = () => {
                                     <div className="mt-6">
                                         <button
                                             onClick={() => router.push('/questionnaire')}
-                                            className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm"
+                                            className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
                                         >
                                             Go to Questionnaire
                                         </button>
@@ -326,7 +326,7 @@ const SummaryPage: React.FC = () => {
                             <div className="mt-6">
                                 <button
                                     onClick={() => router.push('/questionnaire')}
-                                    className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm"
+                                    className="px-5 py-2.5 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
                                 >
                                     Go to Questionnaire
                                 </button>

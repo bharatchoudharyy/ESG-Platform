@@ -43,10 +43,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         if (typeof window !== 'undefined') {
             localStorage.removeItem('authToken');
             localStorage.removeItem('userName');
+            window.location.href = '/';
         }
-        setIsLoggedIn(false);
-        setUserName(null);
-        router.push('/');
     };
 
     const userFirstName = userName ? userName.split(' ')[0] : '';

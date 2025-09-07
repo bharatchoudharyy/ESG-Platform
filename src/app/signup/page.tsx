@@ -102,8 +102,7 @@ const SignupPage: React.FC = () => {
             const data = await response.json();
 
             if (response.ok) {
-                alert('Account created successfully! You can now log in.');
-                router.push('/login');
+                router.push('/login?signup_success=true');
             } else {
                 setError(data.error || 'Signup failed. Please try again.');
             }
