@@ -72,7 +72,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             <div className="flex-1 flex justify-center space-x-6">
                                 <Link
                                     href="/questionnaire"
-                                    className={`text-base font-medium text-gray-700 hover:text-teal-700 transition-colors duration-200 ${pathname === '/questionnaire'
+                                    className={`text-lg font-medium text-gray-700 hover:text-teal-700 transition-colors duration-200 ${pathname === '/questionnaire'
                                         ? 'relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-teal-500'
                                         : ''
                                         }`}
@@ -81,7 +81,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 </Link>
                                 <Link
                                     href="/summary"
-                                    className={`text-base font-medium text-gray-700 hover:text-teal-700 transition-colors duration-200 ${pathname === '/summary'
+                                    className={`text-lg font-medium text-gray-700 hover:text-teal-700 transition-colors duration-200 ${pathname === '/summary'
                                         ? 'relative after:content-[""] after:absolute after:bottom-[-4px] after:left-0 after:right-0 after:h-0.5 after:bg-teal-500'
                                         : ''
                                         }`}
