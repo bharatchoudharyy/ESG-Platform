@@ -20,14 +20,19 @@ const LoginPage: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const signupSuccess = searchParams.get('signup_success');
 
+    // --- 1. Define Demo Credentials ---
+    // IMPORTANT: Make sure these match the demo user account in your database.
+    const DEMO_EMAIL = 'bharat@gmail.com';
+    const DEMO_PASSWORD = 'bharat123';
+
     useEffect(() => {
         // Check if the user is already logged in
         const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
         if (token) {
-            // If token exists, redirect to the questionnaire or dashboard
-            router.push('/questionnaire'); // Or '/'
+            router.push('/questionnaire');
         }
-    }, [router]); // Depend on router
+    }, [router]);
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -59,7 +64,7 @@ const LoginPage: React.FC = () => {
                 if (data.user?.name) {
                     localStorage.setItem('userName', data.user.name);
                 }
-                router.push('/questionnaire'); // Update this redirect later
+                router.push('/questionnaire');
             } else {
                 setError(data.error || 'Login failed. Please try again.');
             }
@@ -71,12 +76,18 @@ const LoginPage: React.FC = () => {
         }
     };
 
+    // --- 2. Create the auto-fill function for the guest button ---
+    const handleGuestLoginClick = () => {
+        setFormData({
+            email: DEMO_EMAIL,
+            password: DEMO_PASSWORD,
+        });
+    };
+
     return (
         <Layout>
-            {/* Wrapper to provide background and centering for the card */}
-            <div className="min-h-[calc(100vh-4rem-88px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6"> {/* Adjust h-screen calc if needed */}
-                {/* The actual card */}
-                <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md"> {/* Card styles remain the same */}
+            <div className="min-h-[calc(100vh-4rem-88px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6">
+                <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Sign in to your account</h2>
                     {signupSuccess === 'true' && (
                         <div className="mt-4 p-3 bg-green-100 text-green-800 rounded-md text-sm text-center">
@@ -105,6 +116,29 @@ const LoginPage: React.FC = () => {
                             Sign In
                         </Button>
                     </form>
+
+                    {/* --- 3. Add the "Login as Guest" button and divider --- */}
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300" />
+                            </div>
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Or</span>
+                            </div>
+                        </div>
+
+                        <div className="mt-6">
+                            <button
+                                type="button"
+                                onClick={handleGuestLoginClick}
+                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                            >
+                                Use Demo Credentials
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="mt-6 text-center">
                         <p className="text-sm text-gray-600">
                             Don't have an account?{' '}
