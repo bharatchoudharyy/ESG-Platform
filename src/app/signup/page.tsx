@@ -15,6 +15,7 @@ const SignupPage: React.FC = () => {
         name: '',
         email: '',
         password: '',
+        confirmPassword: '',
     });
 
     const [isLoading, setIsLoading] = useState(false);
@@ -41,13 +42,24 @@ const SignupPage: React.FC = () => {
         setIsLoading(true);
         setError(null);
 
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match.');
+            setIsLoading(false);
+            return; // Stop submission
+        }
+
         try {
             const response = await fetch('/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ // --- 4. Send only necessary data (exclude confirmPassword) ---
+                    name: formData.name,
+                    email: formData.email,
+                    password: formData.password, // Send the password
+                    // confirmPassword is NOT sent to the API
+                }),
             });
 
             const data = await response.json();
@@ -96,6 +108,14 @@ const SignupPage: React.FC = () => {
                             id="password"
                             type="password"
                             value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
+                        <InputField
+                            label="Confirm Password"
+                            id="confirmPassword"
+                            type="password"
+                            value={formData.confirmPassword}
                             onChange={handleChange}
                             required
                         />

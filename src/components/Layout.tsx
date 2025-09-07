@@ -4,6 +4,7 @@
 import React, { ReactNode, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import Head from 'next/head';
 
 interface LayoutProps {
     children: ReactNode;
@@ -46,17 +47,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         }
         setIsLoggedIn(false);
         setUserName(null);
-        if (pathname === "/") {
-            checkLoginStatus();
-        } else {
-            router.push("/");
-        }
+        router.push('/');
     };
 
     const userFirstName = userName ? userName.split(' ')[0] : '';
 
     return (
         <div className="min-h-screen flex flex-col bg-gray-50">
+            <Head>
+                <title>Oren ESG Platform</title>
+            </Head>
             <header className="bg-white shadow-sm z-50 w-full sticky top-0">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">

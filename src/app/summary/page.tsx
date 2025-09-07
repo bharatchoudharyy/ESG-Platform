@@ -146,7 +146,7 @@ const SummaryPage: React.FC = () => {
                             {/* --- End Charts Section --- */}
                             <hr className="border-gray-300" />
                             {/* --- PARTIAL UPDATE: Tabbed Questionnaire Data Section --- */}
-                            <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-4">Questionnaire Data</h2>
+                            <h2 className="text-xl font-semibold text-gray-800 mt-6 mb-4">Entered Questionnaire Data</h2>
                             {esgData && Object.keys(esgData).length > 0 ? (
                                 <div className="bg-white rounded-lg shadow-sm p-5 border border-gray-200">
                                     {/* --- Year Tabs --- */}
