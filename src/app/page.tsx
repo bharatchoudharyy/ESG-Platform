@@ -51,8 +51,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="w-full bg-white">
+        <div className="max-w-4xl mx-auto py-20 px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl font-extrabold text-gray-800 sm:text-4xl">
+            From Data to Decision, Instantly
+          </h2>
+          <p className="mt-6 text-xl text-gray-700">
+            Our platform simplifies ESG reporting by turning your raw data into a clear narrative. Track everything from carbon emissions to employee diversity across multiple financial years. Watch as your inputs are transformed into real-time insights like Carbon Intensity and Diversity Ratios, all culminating in an interactive dashboard and audit-ready reports.
+          </p>
+        </div>
+      </section>
+
       {/* Features Section - Full Width Background */}
-      <section className="w-full bg-white py-16">
+      <section className="w-full bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-gray-900">Simplify ESG Reporting</h2>
@@ -145,6 +156,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </Layout>
+    </Layout >
   );
 }

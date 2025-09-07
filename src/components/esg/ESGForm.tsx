@@ -245,7 +245,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
             )}
 
             {/* --- 22. Environmental Section --- */}
-            <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 border-l-green-500">
+            <div className="bg-gray-50 p-5 rounded-lg border border-green-500">
                 <fieldset className="mb-0">
                     <legend className="text-lg font-semibold text-teal-700 mb-4 pb-2 border-b border-gray-300">
                         Environmental Metrics
@@ -296,7 +296,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
             </div>
 
             {/* --- 27. Social Section --- */}
-            <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 border-l-blue-500">
+            <div className="bg-gray-50 p-5 rounded-lg border border-blue-500">
                 <fieldset className="mb-0">
                     <legend className="text-lg font-semibold text-teal-700 mb-4 pb-2 border-b border-gray-300">
                         Social Metrics
@@ -347,7 +347,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
             </div>
 
             {/* --- 32. Governance Section --- */}
-            <div className="bg-gray-50 p-5 rounded-lg border border-gray-200 border-l-purple-500">
+            <div className="bg-gray-50 p-5 rounded-lg border border-purple-500">
                 <fieldset className="mb-0">
                     <legend className="text-lg font-semibold text-teal-700 mb-4 pb-2 border-b border-gray-300">
                         Governance Metrics
@@ -420,7 +420,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
             </div>
 
             {/* --- 38. Auto-Calculated Metrics Section --- */}
-            <div className="bg-teal-50 p-5 rounded-lg border border-teal-200 border-l-yellow-500">
+            <div className="bg-teal-50 p-5 rounded-lg border border-teal-200">
                 <fieldset className="mb-0">
                     <legend className="text-lg font-semibold text-teal-800 mb-4 pb-2 border-b border-teal-300">
                         Auto-Calculated Metrics
