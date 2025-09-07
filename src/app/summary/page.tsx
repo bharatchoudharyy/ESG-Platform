@@ -1,25 +1,24 @@
 // src/app/summary/page.tsx
-'use client'; // Essential for client-side interactivity
+'use client';
 
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
-import { ESGFormData, ESGData } from '@/types/esg';
+import { ESGFormData } from '@/types/esg';
 import CarbonIntensityChart from '@/components/charts/CarbonIntensityChart';
 import DiversityRatioChart from '@/components/charts/DiversityRatioChart';
 import RenewableElectricityRatioChart from '@/components/charts/RenewableElectricityRatioChart';
 import CommunitySpendRatioChart from '@/components/charts/CommunitySpendRatioChart';
-import DataCard from '@/components/ui/DataCard'; // Import the new DataCard component
+import DataCard from '@/components/ui/DataCard';
+import { generatePDF } from '@/utils/pdfGenerator'; // Import the new function
 
 const SummaryPage: React.FC = () => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const [esgData, setEsgData] = useState<ESGFormData | null>(null);
     const [error, setError] = useState<string | null>(null);
-    // --- State for managing the active financial year tab ---
     const [activeYearTab, setActiveYearTab] = useState<number | null>(null);
 
-    // --- Helper function to sort years descending ---
     const getSortedYears = useCallback(() => {
         if (!esgData) return [];
         return Object.keys(esgData)
@@ -28,9 +27,9 @@ const SummaryPage: React.FC = () => {
             .sort((a, b) => b - a);
     }, [esgData]);
 
-    // Check authentication and fetch data on component mount
     useEffect(() => {
         const fetchData = async () => {
+            // ... (rest of the fetchData function remains the same)
             const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
             if (!token) {
                 router.push('/login');
@@ -66,23 +65,28 @@ const SummaryPage: React.FC = () => {
         fetchData();
     }, [router]);
 
-    // --- useEffect to initialize or update the active tab when esgData changes ---
     useEffect(() => {
         if (esgData && Object.keys(esgData).length > 0 && activeYearTab === null) {
             const sortedYears = getSortedYears();
             if (sortedYears.length > 0) {
-                setActiveYearTab(sortedYears[0]); // Set the newest year as default
+                setActiveYearTab(sortedYears[0]);
             }
         } else if (esgData && activeYearTab !== null && !esgData[activeYearTab]) {
-            // Handle case where activeYearTab is set but data for that year was deleted/lost
             const sortedYears = getSortedYears();
             if (sortedYears.length > 0) {
-                setActiveYearTab(sortedYears[0]); // Fallback to newest available
+                setActiveYearTab(sortedYears[0]);
             } else {
-                setActiveYearTab(null); // No data available
+                setActiveYearTab(null);
             }
         }
     }, [esgData, activeYearTab, getSortedYears]);
+
+    // Add this handler for the download button
+    const handleDownloadPDF = () => {
+        if (esgData) {
+            generatePDF(esgData);
+        }
+    };
 
     const formatYesNo = (value: boolean | null | undefined): string => {
         if (value === true) return 'Yes';
@@ -90,8 +94,8 @@ const SummaryPage: React.FC = () => {
         return '-';
     };
 
-    // Show a simple loading state while checking auth and fetching data
     if (isLoading) {
+        // ... (loading state remains the same)
         return (
             <Layout>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center h-[50vh]">
@@ -105,17 +109,17 @@ const SummaryPage: React.FC = () => {
         <Layout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="bg-white shadow rounded-lg p-6">
-                    {/* Header Section with Title and Download Button */}
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                         <h1 className="text-2xl font-bold text-gray-900">ESG Summary Dashboard</h1>
                         <button
                             className="mt-2 sm:mt-0 px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
-                        // onClick handler will be added later for PDF download
+                            onClick={handleDownloadPDF} // Add the onClick handler
                         >
                             Download Summary (PDF)
                         </button>
                     </div>
 
+                    {/* ... (rest of the component remains the same) ... */}
                     {error && (
                         <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-md text-sm">
                             Error: {error}
@@ -333,6 +337,7 @@ const SummaryPage: React.FC = () => {
                             </div>
                         </div>
                     )}
+
                 </div>
             </div>
         </Layout >
