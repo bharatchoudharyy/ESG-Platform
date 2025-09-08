@@ -302,7 +302,7 @@ const SummaryPage: React.FC = () => {
     };
 
     if (isLoading) {
-        return <Layout><div className="text-center py-10">Loading summary data...</div></Layout>;
+        return <Layout><div className="text-center py-50 text-gray-800">Loading summary data...</div></Layout>;
     }
 
     if (error) {

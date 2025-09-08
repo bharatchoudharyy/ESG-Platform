@@ -15,12 +15,11 @@ const QuestionnairePage: React.FC = () => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [initialFetchedData, setInitialFetchedData] = useState<ESGFormData | null>(null);
 
-    // --- 1. State for managing years and active year ---
     const [years, setYears] = useState<number[]>([]);
     const [activeYear, setActiveYear] = useState<number | null>(null);
-    const [isAddingYear, setIsAddingYear] = useState(false); // State for modal
-    const [newYearInput, setNewYearInput] = useState<string>(''); // State for year input
-    const [newYearError, setNewYearError] = useState<string | null>(null); // State for year input error
+    const [isAddingYear, setIsAddingYear] = useState(false);
+    const [newYearInput, setNewYearInput] = useState<string>('');
+    const [newYearError, setNewYearError] = useState<string | null>(null);
 
     useEffect(() => {
         const checkAuthAndFetchData = async () => {
@@ -41,14 +40,13 @@ const QuestionnairePage: React.FC = () => {
                 if (response.ok) {
                     const data = await response.json();
                     setInitialFetchedData(data.responses || {});
-                    // --- 2. Initialize years and active year from fetched data ---
                     const fetchedYears = Object.keys(data.responses || {})
                         .map(Number)
                         .filter(y => !isNaN(y))
-                        .sort((a, b) => b - a); // Sort descending
+                        .sort((a, b) => b - a);
                     setYears(fetchedYears);
                     if (fetchedYears.length > 0) {
-                        setActiveYear(fetchedYears[0]); // Set first (newest) as active
+                        setActiveYear(null);
                     }
                 } else {
                     console.error('Failed to fetch initial ', response.status);
@@ -65,7 +63,6 @@ const QuestionnairePage: React.FC = () => {
         checkAuthAndFetchData();
     }, [router]);
 
-    // --- 3. Handlers for year management ---
     const handleStartAddYear = () => {
         setIsAddingYear(true);
         setNewYearInput('');
@@ -84,11 +81,10 @@ const QuestionnairePage: React.FC = () => {
         }
         const newYears = [...years, year].sort((a, b) => b - a);
         setYears(newYears);
-        setActiveYear(year); // Set the newly added year as active
+        setActiveYear(year);
         setIsAddingYear(false);
         setNewYearInput('');
         setNewYearError(null);
-        // Initialize data for the new year in the form data
         setInitialFetchedData(prev => ({ ...prev, [year]: {} }));
     };
 
@@ -98,12 +94,7 @@ const QuestionnairePage: React.FC = () => {
         setNewYearError(null);
     };
 
-    const handleYearTabClick = (year: number) => {
-        setActiveYear(year);
-    };
-
     const handleRemoveYear = async (yearToRemove: number) => {
-
         const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
         if (!token) {
             setSubmitError('Authentication required to remove data.');
@@ -121,23 +112,16 @@ const QuestionnairePage: React.FC = () => {
             if (!response.ok) {
                 const errorData = await response.json();
                 console.error(`Failed to delete year ${yearToRemove}:`, errorData.error);
-
             }
         } catch (err: any) {
             console.error(`Network error deleting year ${yearToRemove}:`, err);
-
         }
 
-        // Update UI state
         const newYears = years.filter(y => y !== yearToRemove);
         setYears(newYears);
-
-        // Update active year if the removed year was active
         if (activeYear === yearToRemove) {
-            setActiveYear(newYears.length > 0 ? newYears[0] : null);
+            setActiveYear(null);
         }
-
-        // Remove data from local state
         setInitialFetchedData(prev => {
             if (!prev) return prev;
             const newData = { ...prev };
@@ -157,7 +141,6 @@ const QuestionnairePage: React.FC = () => {
                 throw new Error('Authentication token not found. Please log in again.');
             }
 
-            // Prepare data for the active year only
             const activeYearData = activeYear !== null ? { [activeYear]: data[activeYear] } : {};
 
             const response = await fetch('/api/responses', {
@@ -186,7 +169,7 @@ const QuestionnairePage: React.FC = () => {
                 } catch (refreshErr) {
                     console.error('Error refreshing data after save:', refreshErr);
                 }
-                setTimeout(() => setSubmitSuccess(false), 3000);
+                setTimeout(() => setSubmitSuccess(false), 5000);
             } else {
                 const errorData = await response.json();
                 console.error('API Error Response:', errorData);
@@ -204,7 +187,7 @@ const QuestionnairePage: React.FC = () => {
         return (
             <Layout>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center h-[50vh]">
-                    <p className="text-lg text-gray-600">Loading...</p>
+                    <p className="text-md text-gray-800">Loading questionnaire data...</p>
                 </div>
             </Layout>
         );
@@ -214,37 +197,15 @@ const QuestionnairePage: React.FC = () => {
         <Layout>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="bg-white shadow rounded-lg p-6">
-                    {/* --- 4. Header Section with Title, Add Button, and Tabs --- */}
-                    <div className="flex flex-col">
-                        <div className="flex justify-between items-center mb-4">
-                            <h1 className="text-2xl font-bold text-gray-900">ESG Questionnaire</h1>
-                            <button
-                                type="button"
-                                onClick={handleStartAddYear}
-                                className="px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
-                            >
-                                Add Financial Year
-                            </button>
-                        </div>
-
-                        {/* --- 5. Year Tabs --- */}
-                        {years.length > 0 && (
-                            <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-2">
-                                {years.map((year) => (
-                                    <button
-                                        key={year}
-                                        type="button"
-                                        onClick={() => handleYearTabClick(year)}
-                                        className={`px-4 py-2 text-sm font-medium rounded-md focus:outline-none ${activeYear === year
-                                            ? 'bg-teal-100 text-gray-700 border border-gray-300 -mb-px z-10 relative'
-                                            : 'text-gray-700 hover:bg-gray-100 cursor-pointer'
-                                            }`}
-                                    >
-                                        FY {year}
-                                    </button>
-                                ))}
-                            </div>
-                        )}
+                    <div className="flex justify-between items-center mb-4">
+                        <h1 className="text-2xl font-bold text-gray-900">ESG Questionnaire</h1>
+                        <button
+                            type="button"
+                            onClick={handleStartAddYear}
+                            className="px-4 py-2 border border-transparent text-base font-medium rounded-md text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 shadow-sm cursor-pointer"
+                        >
+                            Add Financial Year
+                        </button>
                     </div>
 
                     {submitSuccess && (
@@ -264,26 +225,63 @@ const QuestionnairePage: React.FC = () => {
                         </div>
                     )}
 
-                    {/* --- 6. Render ESGForm for the active year --- */}
-                    {activeYear !== null ? (
-                        <ESGForm
-                            key={activeYear} // Ensure form re-renders when year changes
-                            initialData={{ [activeYear]: initialFetchedData?.[activeYear] || {} }}
-                            onSubmit={handleSubmit}
-                            isSubmitting={isSubmitting}
-                            setSubmitError={setSubmitError}
-                            activeYear={activeYear} // Pass active year
-                            onRemoveYear={handleRemoveYear} // Pass remove handler
-                        />
+                    {years.length > 0 ? (
+                        <div className="space-y-4">
+                            {years.map((year) => (
+                                <div key={year} className="border rounded-lg">
+                                    {activeYear === year ? (
+                                        <div>
+                                            {/* Year headline stays visible */}
+                                            <div className="flex justify-between items-center p-4 border-b bg-gray-50">
+                                                <span className="font-medium text-gray-900">Financial Year {year}</span>
+                                                <button
+                                                    onClick={() => setActiveYear(null)}
+                                                    className="px-3 py-1.5 text-sm text-gray-800 border rounded hover:bg-gray-100"
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                            <div className="p-4">
+                                                <ESGForm
+                                                    initialData={{ [year]: initialFetchedData?.[year] || {} }}
+                                                    onSubmit={handleSubmit}
+                                                    isSubmitting={isSubmitting}
+                                                    setSubmitError={setSubmitError}
+                                                    activeYear={year}
+                                                    onRemoveYear={handleRemoveYear}
+                                                />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="flex justify-between items-center p-4 bg-gray-50">
+                                            <span className="font-medium text-gray-900">Financial Year {year}</span>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => setActiveYear(year)}
+                                                    className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded-md hover:bg-teal-700"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleRemoveYear(year)}
+                                                    className="px-3 py-1.5 text-sm border border-red-500 text-red-600 rounded-md hover:bg-red-50"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
                     ) : (
                         <div className="text-center py-10">
-                            <p className="text-gray-600">No financial years added yet.</p>
+                            <p className="text-gray-800">No financial years added yet.</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* --- 7. Modal for Adding New Year --- */}
             {isAddingYear && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-hidden">
                     <div className="fixed inset-0 bg-white/10 backdrop-blur-sm" onClick={handleCancelAddYear} aria-hidden="true"></div>
@@ -293,7 +291,7 @@ const QuestionnairePage: React.FC = () => {
                     >
                         <h3 className="text-lg font-medium text-gray-900 mb-4">Add Financial Year</h3>
                         <div className="mb-4">
-                            <label htmlFor="newYearInput" className="block text-sm font-medium text-gray-700 mb-1">
+                            <label htmlFor="newYearInput" className="block text-sm font-medium text-gray-900 mb-1">
                                 Enter Financial Year (e.g., 2023)
                             </label>
                             <input
@@ -328,7 +326,7 @@ const QuestionnairePage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleCancelAddYear}
-                                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                className="px-4 py-2 text-sm font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
                             >
                                 Cancel
                             </button>
