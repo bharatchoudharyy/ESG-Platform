@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
 
-## Getting Started
+# Oren ESG Platform
 
-First, run the development server:
+**A comprehensive platform to track, manage, and report your Environmental, Social, and Governance (ESG) performance.**
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+</div>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<div align="center">
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+# [**Live Demo**](https://oren-esg-platform.vercel.app)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+</div>
 
-## Learn More
+## 📸 Screenshots
 
-To learn more about Next.js, take a look at the following resources:
+Landing Page
+<br>
+<br>
+<img width="1470" height="832" alt="Screenshot 2025-09-08 at 6 56 39 PM" src="https://github.com/user-attachments/assets/2b410a50-67f0-4283-91eb-17746e38c5f7" />
+<br>
+<br>
+Questionnaire Page
+<br>
+<br>
+<img width="798" height="832" alt="image" src="https://github.com/user-attachments/assets/19cc67d6-40b9-4ceb-8489-7fe4826f10ec" />
+<br>
+<br>
+Per-Year Summary Page
+<br>
+<br>
+<img width="797" height="596" alt="Screenshot 2025-09-08 at 6 54 02 PM" src="https://github.com/user-attachments/assets/96c26eb8-b732-426e-b4e5-3557949bf49d" />
+<br>
+<br>
+Total Summary Page
+<br>
+<br>
+<img width="756" height="725" alt="Screenshot 2025-09-08 at 6 54 56 PM" src="https://github.com/user-attachments/assets/3ff57ba4-2ae7-47d1-bfde-0412eca05611" />
+<br>
+<br>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 📋 About The Project
 
-## Deploy on Vercel
+This is a full-stack web application designed to simplify the process of ESG reporting. It allows users to input detailed environmental, social, and governance data for multiple financial years. The platform then automatically calculates key performance indicators, providing instant insights and visualizations. The primary goal is to transform raw data into a clear, actionable narrative, enabling organizations to make informed, data-driven decisions and generate audit-ready reports with ease.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ✨ Features
+
+* 🔐 **Secure User Authentication**: Complete with JWT-based login and registration.
+* 📝 **Dynamic ESG Questionnaire**: Easily add and manage ESG data for different financial years.
+* 🧠 **Real-time Metric Calculation**: Instantly calculates derived metrics like:
+    * Carbon Intensity (T CO2e / INR)
+    * Renewable Electricity Ratio (%)
+    * Workforce Diversity Ratio (%)
+    * Community Spend Ratio (%)
+* 📊 **Interactive Dashboard**: Visualize year-over-year trends with dynamic charts and detailed data tables.
+* 📄 **PDF Report Generation**: Download comprehensive per-year or cumulative ESG summary reports.
+
+---
+
+## 🛠️ Built With
+
+This project is built with modern web technologies to provide a fast, secure, and user-friendly experience.
+
+* **Frontend**:
+    * [Next.js](https://nextjs.org/)
+    * [React](https://reactjs.org/)
+    * [Tailwind CSS](https://tailwindcss.com/)
+    * [Chart.js](https://www.chartjs.org/)
+* **Backend**:
+    * [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
+    * [PostgreSQL](https://www.postgresql.org/)
+    * [Prisma](https://www.prisma.io/)
+* **Authentication**:
+    * [JWT (JSON Web Tokens)](https://jwt.io/)
+    * [bcrypt.js](https://github.com/dcodeIO/bcrypt.js)
+* **Deployment**:
+    * [Vercel](https://vercel.com/)
+
+---
+
