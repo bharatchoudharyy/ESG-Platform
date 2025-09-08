@@ -6,12 +6,12 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement, // Using Bar chart
+    BarElement,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2'; // Using Bar component
+import { Bar } from 'react-chartjs-2';
 import { ESGFormData } from '@/types/esg';
 
 ChartJS.register(
@@ -44,7 +44,7 @@ const CommunitySpendRatioChart: React.FC<CommunitySpendRatioChartProps> = ({ dat
             {
                 label: 'Community Spend Ratio (%)',
                 data: filteredValues,
-                backgroundColor: 'rgba(75, 192, 192, 0.6)', // Teal bars
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
             },

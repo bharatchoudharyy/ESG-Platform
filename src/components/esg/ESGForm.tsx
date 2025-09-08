@@ -14,9 +14,9 @@ interface ESGFormProps {
     initialData?: ESGFormData;
     onSubmit: (data: ESGFormData) => void;
     isSubmitting: boolean;
-    setSubmitError: React.Dispatch<React.SetStateAction<string | null>>; // For general errors
-    activeYear: number; // The year this form instance represents
-    onRemoveYear: (year: number) => void; // Function to handle year removal
+    setSubmitError: React.Dispatch<React.SetStateAction<string | null>>;
+    activeYear: number;
+    onRemoveYear: (year: number) => void;
 }
 
 // --- 3. Helper function for field labels ---
@@ -45,9 +45,9 @@ const ESGForm: React.FC<ESGFormProps> = ({
     initialData = {},
     onSubmit,
     isSubmitting,
-    setSubmitError, // For general error message
-    activeYear, // Receive the active year
-    onRemoveYear, // Receive the remove handler
+    setSubmitError,
+    activeYear,
+    onRemoveYear,
 }) => {
     // --- 4. State for the single year's form data ---
     const [yearData, setYearData] = useState<ESGData>(initialData[activeYear] || {});
@@ -94,8 +94,8 @@ const ESGForm: React.FC<ESGFormProps> = ({
     // --- 10. Handler for form submission (prepares data for the single year) ---
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        setSubmitError(null); // Clear any previous general error
-        setFieldErrors({}); // Clear any previous field errors
+        setSubmitError(null);
+        setFieldErrors({});
 
         const errors: { field: keyof ESGData; message: string }[] = []; // --- 11. Array to collect validation errors ---
 
@@ -222,7 +222,6 @@ const ESGForm: React.FC<ESGFormProps> = ({
         }
 
         // --- 19. If validation passes, prepare data and call onSubmit ---
-        // Calculate metrics before submitting
         const dataWithCalculations: ESGFormData = {
             [activeYear]: {
                 ...yearData,
@@ -237,7 +236,6 @@ const ESGForm: React.FC<ESGFormProps> = ({
 
 
             {/* --- 21. General Error Message Display (at the top of the form section) --- */}
-            {/* This will show if there are field errors */}
             {Object.keys(fieldErrors).length > 0 && (
                 <div className="mb-4 p-4 bg-red-100 text-red-700 rounded-md text-sm">
                     Please check the fields below for required information.
@@ -269,7 +267,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('renewableElectricityConsumption', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['renewableElectricityConsumption']} // --- 24. Pass field error ---
+                            error={fieldErrors['renewableElectricityConsumption']}
                         />
                         <InputField
                             label="Total Fuel Consumption (liters)"
@@ -279,7 +277,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('totalFuelConsumption', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['totalFuelConsumption']} // --- 25. Pass field error ---
+                            error={fieldErrors['totalFuelConsumption']}
                         />
                         <InputField
                             label="Carbon Emissions (T CO2e)"
@@ -289,7 +287,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('carbonEmissions', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['carbonEmissions']} // --- 26. Pass field error ---
+                            error={fieldErrors['carbonEmissions']}
                         />
                     </div>
                 </fieldset>
@@ -310,7 +308,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('totalEmployees', e.target.value)}
                             min="0"
                             step="1"
-                            error={fieldErrors['totalEmployees']} // --- 28. Pass field error ---
+                            error={fieldErrors['totalEmployees']}
                         />
                         <InputField
                             label="Number of Female Employees"
@@ -320,7 +318,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('femaleEmployees', e.target.value)}
                             min="0"
                             step="1"
-                            error={fieldErrors['femaleEmployees']} // --- 29. Pass field error ---
+                            error={fieldErrors['femaleEmployees']}
                         />
                         <InputField
                             label="Average Training Hours per Employee (per year)"
@@ -330,7 +328,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('averageTrainingHours', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['averageTrainingHours']} // --- 30. Pass field error ---
+                            error={fieldErrors['averageTrainingHours']}
                         />
                         <InputField
                             label="Community Investment Spend (INR)"
@@ -340,7 +338,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('communityInvestment', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['communityInvestment']} // --- 31. Pass field error ---
+                            error={fieldErrors['communityInvestment']}
                         />
                     </div>
                 </fieldset>
@@ -362,14 +360,12 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             min="0"
                             max="100"
                             step="any"
-                            error={fieldErrors['independentBoardMembers']} // --- 33. Pass field error ---
+                            error={fieldErrors['independentBoardMembers']}
                         />
                         <div className="mb-4">
                             <label htmlFor={`hasDataPrivacyPolicy-${activeYear}`} className="block text-sm font-medium text-gray-700 mb-1">
                                 Does the company have a data privacy policy?
                             </label>
-                            {/* Note: InputField component doesn't handle select errors directly in this version.
-                                You might need to create a separate SelectField component or handle the error display manually here. */}
                             <select
                                 id={`hasDataPrivacyPolicy-${activeYear}`}
                                 className={`w-full px-4 py-3 border ${fieldErrors['hasDataPrivacyPolicy'] ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-colors cursor-pointer`} // --- 34. Apply error styling ---
@@ -413,7 +409,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
                             onChange={(e) => handleInputChange('totalRevenue', e.target.value)}
                             min="0"
                             step="any"
-                            error={fieldErrors['totalRevenue']} // --- 37. Pass field error ---
+                            error={fieldErrors['totalRevenue']}
                         />
                     </div>
                 </fieldset>
@@ -477,7 +473,7 @@ const ESGForm: React.FC<ESGFormProps> = ({
 
                 <button
                     type="button"
-                    onClick={() => onRemoveYear(activeYear)} // Call the passed handler
+                    onClick={() => onRemoveYear(activeYear)}
                     className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-800 focus:outline-none cursor-pointer border border-red-500 rounded-md hover:bg-red-50 transition-colors"
                 >
                     Remove This Year

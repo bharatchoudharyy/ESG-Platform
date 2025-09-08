@@ -1,11 +1,11 @@
 // src/components/charts/CarbonIntensityChart.tsx
-'use client'; // Important for client-side rendering with Chart.js
+'use client';
 
 import React from 'react';
 import {
     Chart as ChartJS,
-    CategoryScale, // For X-axis labels (years)
-    LinearScale,   // For Y-axis values
+    CategoryScale,
+    LinearScale,
     PointElement,
     LineElement,
     Title,
@@ -13,7 +13,7 @@ import {
     Legend,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import { ESGFormData } from '@/types/esg'; // Import the type
+import { ESGFormData } from '@/types/esg';
 
 // Register the components Chart.js needs
 ChartJS.register(
@@ -28,18 +28,16 @@ ChartJS.register(
 
 // Define the props for the component
 interface CarbonIntensityChartProps {
-    data: ESGFormData; // The ESG data fetched in the summary page
+    data: ESGFormData;
 }
 
 const CarbonIntensityChart: React.FC<CarbonIntensityChartProps> = ({ data }) => {
-    // Prepare data for Chart.js
     // 1. Extract years and sort them
     const years = Object.keys(data).map(Number).sort((a, b) => a - b);
 
     // 2. Extract Carbon Intensity values for each year
     const carbonIntensityValues = years.map(year => {
         const yearData = data[year];
-        // Handle potential null/undefined values gracefully
         return yearData?.carbonIntensity ?? null;
     });
 
@@ -47,7 +45,7 @@ const CarbonIntensityChart: React.FC<CarbonIntensityChartProps> = ({ data }) => 
     const validDataPoints = years.map((year, index) => ({
         year,
         value: carbonIntensityValues[index]
-    })).filter(point => point.value !== null); // Keep only points with data
+    })).filter(point => point.value !== null);
 
     const filteredYears = validDataPoints.map(point => point.year.toString()); // Convert years to strings for labels
     const filteredValues = validDataPoints.map(point => point.value);
@@ -55,15 +53,15 @@ const CarbonIntensityChart: React.FC<CarbonIntensityChartProps> = ({ data }) => 
     // Chart.js configuration object
     const chartData = {
         // X-axis labels
-        labels: filteredYears, // Use the filtered years
+        labels: filteredYears,
         datasets: [
             {
                 label: 'Carbon Intensity (T CO2e/INR)',
                 // Y-axis data points
-                data: filteredValues, // Use the filtered values
-                borderColor: 'rgb(75, 192, 192)', // Line color
-                backgroundColor: 'rgba(75, 192, 192, 0.5)', // Fill color under the line
-                tension: 0.1, // Smoothness of the line
+                data: filteredValues,
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                tension: 0.1,
             },
         ],
     };
@@ -72,16 +70,16 @@ const CarbonIntensityChart: React.FC<CarbonIntensityChartProps> = ({ data }) => 
         responsive: true,
         plugins: {
             legend: {
-                position: 'top' as const, // Position of the legend
+                position: 'top' as const,
             },
             title: {
                 display: true,
-                text: 'Carbon Intensity Trend', // Chart title
+                text: 'Carbon Intensity Trend',
             },
         },
         scales: {
             y: {
-                beginAtZero: true, // Y-axis starts at 0
+                beginAtZero: true,
                 title: {
                     display: true,
                     text: 'T CO2e/INR'

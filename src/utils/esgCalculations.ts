@@ -1,11 +1,7 @@
 // src/utils/esgCalculations.ts
 import { ESGData } from '@/types/esg';
 
-/**
- * Calculates the auto-derived ESG metrics for a single year based on the input data.
- * @param data The ESGData object containing input values for a specific year.
- * @returns An ESGData object containing the calculated metrics.
- */
+// Calculates the auto-derived ESG metrics for a single year based on the input data.
 export function calculateESGMetrics(data: ESGData): ESGData {
     const calculatedData: ESGData = {};
 
@@ -14,7 +10,7 @@ export function calculateESGMetrics(data: ESGData): ESGData {
     if (data.carbonEmissions != null && data.totalRevenue != null && data.totalRevenue !== 0) {
         calculatedData.carbonIntensity = data.carbonEmissions / data.totalRevenue;
     } else {
-        calculatedData.carbonIntensity = null; // Cannot calculate if either is null or revenue is 0
+        calculatedData.carbonIntensity = null;
     }
 
     // --- Renewable Electricity Ratio ---
@@ -27,7 +23,7 @@ export function calculateESGMetrics(data: ESGData): ESGData {
         calculatedData.renewableElectricityRatio =
             100 * (data.renewableElectricityConsumption / data.totalElectricityConsumption);
     } else {
-        calculatedData.renewableElectricityRatio = null; // Cannot calculate if either is null or total consumption is 0
+        calculatedData.renewableElectricityRatio = null;
     }
 
     // --- Diversity Ratio ---
@@ -35,7 +31,7 @@ export function calculateESGMetrics(data: ESGData): ESGData {
     if (data.femaleEmployees != null && data.totalEmployees != null && data.totalEmployees !== 0) {
         calculatedData.diversityRatio = 100 * (data.femaleEmployees / data.totalEmployees);
     } else {
-        calculatedData.diversityRatio = null; // Cannot calculate if either is null or total employees is 0
+        calculatedData.diversityRatio = null;
     }
 
     // --- Community Spend Ratio ---
@@ -43,7 +39,7 @@ export function calculateESGMetrics(data: ESGData): ESGData {
     if (data.communityInvestment != null && data.totalRevenue != null && data.totalRevenue !== 0) {
         calculatedData.communitySpendRatio = 100 * (data.communityInvestment / data.totalRevenue);
     } else {
-        calculatedData.communitySpendRatio = null; // Cannot calculate if either is null or revenue is 0
+        calculatedData.communitySpendRatio = null;
     }
 
     return calculatedData;

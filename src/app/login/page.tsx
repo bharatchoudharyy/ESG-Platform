@@ -21,7 +21,6 @@ const LoginPage: React.FC = () => {
     const signupSuccess = searchParams.get('signup_success');
 
     // --- 1. Define Demo Credentials ---
-    // IMPORTANT: Make sure these match the demo user account in your database.
     const DEMO_EMAIL = 'bharat@gmail.com';
     const DEMO_PASSWORD = 'bharat123';
 

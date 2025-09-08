@@ -1,33 +1,31 @@
 // src/app/page.tsx
-'use client'; // Add this directive
+'use client';
 
-import React, { useEffect, useState } from 'react'; // Add useState
-import { useRouter } from 'next/navigation'; // Add useRouter
+import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
 import Link from 'next/link';
 
 export default function Home() {
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // State to track login status
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     // Check for the auth token in localStorage
     const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
-    setIsLoggedIn(!!token); // Update state based on token existence
-  }, []); // Run only once on mount
+    setIsLoggedIn(!!token);
+  }, []);
 
   // Handler for the main CTA buttons
   const handleCtaClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (isLoggedIn) {
-      e.preventDefault(); // Prevent default link behavior
-      router.push('/questionnaire'); // Redirect logged-in users to the questionnaire
+      e.preventDefault();
+      router.push('/questionnaire');
     }
-    // If not logged in, let the default link behavior (href) take place
   };
 
   return (
     <Layout>
-      {/* Hero Section - Full Width Background */}
       <section className="w-full bg-gradient-to-br from-cyan-100 via-gray-50 to-teal-50 text-gray-800">
         <div className="max-w-7xl mx-auto py-24 md:py-32 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -40,8 +38,8 @@ export default function Home() {
             <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
               {/* Conditional CTA Button */}
               <Link
-                href={isLoggedIn ? "/questionnaire" : "/signup"} // Adjust href for better SEO/UX
-                onClick={handleCtaClick} // Handle click for redirect logic
+                href={isLoggedIn ? "/questionnaire" : "/signup"}
+                onClick={handleCtaClick}
                 className="px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-teal-700 hover:bg-teal-800 md:py-4 md:text-lg md:px-10 transition-colors shadow-sm text-center"
               >
                 {isLoggedIn ? "Go to Questionnaire" : "Get Started"}
@@ -62,7 +60,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Features Section - Full Width Background */}
+      {/* Features Section */}
       <section className="w-full bg-gray-100 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -126,7 +124,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section - Full Width Background */}
+      {/* CTA Section */}
       <section className="w-full bg-gray-50 py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
@@ -135,7 +133,7 @@ export default function Home() {
               <span className="block text-teal-700">{isLoggedIn ? "Continue your journey." : "Join today."}</span>
             </h2>
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-4">
-              {/* Conditional CTA Button (repeated for consistency) */}
+              {/* Conditional CTA Button */}
               <Link
                 href={isLoggedIn ? "/questionnaire" : "/signup"}
                 onClick={handleCtaClick}
@@ -143,7 +141,7 @@ export default function Home() {
               >
                 {isLoggedIn ? "Go to Questionnaire" : "Create Account"}
               </Link>
-              {/* Conditional Secondary Button (repeated for consistency) */}
+              {/* Conditional Secondary Button*/}
               {!isLoggedIn && (
                 <Link
                   href="/login"

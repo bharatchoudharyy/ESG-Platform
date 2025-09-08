@@ -67,7 +67,7 @@ export const generatePerYearPDF = (yearData: ESGData, year: number) => {
     // Header
     addHeader(doc);
 
-    // Title on same page
+    // Title 
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(colors.textPrimary);
@@ -135,7 +135,7 @@ export const generatePerYearPDF = (yearData: ESGData, year: number) => {
     doc.save(`ESG_Report_FY${year}.pdf`);
 };
 
-// --- Cumulative PDF Generator (unchanged from your version) ---
+// --- Cumulative PDF Generator  ---
 export const generateCumulativePDF = (esgData: ESGFormData) => {
     const doc = new jsPDF();
     const sortedYears = Object.keys(esgData).map(Number).sort((a, b) => b - a);

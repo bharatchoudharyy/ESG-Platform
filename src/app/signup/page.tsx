@@ -26,9 +26,9 @@ const SignupPage: React.FC = () => {
         const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
         if (token) {
             // If token exists, redirect to the questionnaire or dashboard
-            router.push('/questionnaire'); // Or '/'
+            router.push('/questionnaire');
         }
-    }, [router]); // Depend on router
+    }, [router]);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({
@@ -55,7 +55,7 @@ const SignupPage: React.FC = () => {
         }
 
         const nameRegex = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/; // Starts & ends with letter, contains only letters/spaces
-        if (!nameRegex.test(formData.name.trim())) { // Trim whitespace before testing
+        if (!nameRegex.test(formData.name.trim())) {
             // Check if it's at least 1 char after trimming and starts/ends correctly
             const trimmedName = formData.name.trim();
             if (trimmedName.length === 0) {
@@ -94,8 +94,7 @@ const SignupPage: React.FC = () => {
                 body: JSON.stringify({ // --- 4. Send only necessary data (exclude confirmPassword) ---
                     name: formData.name,
                     email: formData.email,
-                    password: formData.password, // Send the password
-                    // confirmPassword is NOT sent to the API
+                    password: formData.password,
                 }),
             });
 
@@ -116,10 +115,8 @@ const SignupPage: React.FC = () => {
 
     return (
         <Layout>
-            {/* Wrapper to provide background and centering for the card */}
-            <div className="min-h-[calc(100vh-4rem-88px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6"> {/* Adjust h-screen calc if needed based on exact header/footer height */}
-                {/* The actual card */}
-                <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md"> {/* Card styles remain the same */}
+            <div className="min-h-[calc(100vh-4rem-88px)] w-full bg-gray-50 flex items-center justify-center p-4 sm:p-6">
+                <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
                     <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
                     {error && <div className="mt-4 p-2 bg-red-100 text-red-700 rounded-md text-sm">{error}</div>}
                     <form className="mt-8 space-y-6" onSubmit={handleSubmit}>

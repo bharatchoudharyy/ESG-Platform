@@ -231,7 +231,6 @@ const QuestionnairePage: React.FC = () => {
                                 <div key={year} className="border rounded-lg">
                                     {activeYear === year ? (
                                         <div>
-                                            {/* Year headline stays visible */}
                                             <div className="flex justify-between items-center p-4 border-b bg-gray-50">
                                                 <span className="font-medium text-gray-900">Financial Year {year}</span>
                                                 <button

@@ -6,18 +6,18 @@ import {
     Chart as ChartJS,
     CategoryScale,
     LinearScale,
-    BarElement, // Changed to BarElement for Bar chart
+    BarElement,
     Title,
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2'; // Changed to Bar
+import { Bar } from 'react-chartjs-2';
 import { ESGFormData } from '@/types/esg';
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
-    BarElement, // Register BarElement
+    BarElement,
     Title,
     Tooltip,
     Legend
@@ -44,7 +44,7 @@ const DiversityRatioChart: React.FC<DiversityRatioChartProps> = ({ data }) => {
             {
                 label: 'Diversity Ratio (%)',
                 data: filteredValues,
-                backgroundColor: 'rgba(153, 102, 255, 0.6)', // Purple bars
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
                 borderColor: 'rgba(153, 102, 255, 1)',
                 borderWidth: 1,
             },
@@ -71,7 +71,7 @@ const DiversityRatioChart: React.FC<DiversityRatioChartProps> = ({ data }) => {
                 },
                 ticks: {
                     callback: function (value: any) {
-                        return value + '%'; // Add % sign to Y-axis labels
+                        return value + '%';
                     }
                 }
             },
@@ -92,7 +92,7 @@ const DiversityRatioChart: React.FC<DiversityRatioChartProps> = ({ data }) => {
         );
     }
 
-    return <Bar data={chartData} options={options} />; // Use Bar component
+    return <Bar data={chartData} options={options} />;
 };
 
 export default DiversityRatioChart;

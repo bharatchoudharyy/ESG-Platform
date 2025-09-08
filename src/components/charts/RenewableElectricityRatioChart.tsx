@@ -12,7 +12,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import { Line } from 'react-chartjs-2'; // Using Line chart
+import { Line } from 'react-chartjs-2';
 import { ESGFormData } from '@/types/esg';
 
 ChartJS.register(
@@ -46,7 +46,7 @@ const RenewableElectricityRatioChart: React.FC<RenewableElectricityRatioChartPro
             {
                 label: 'Renewable Electricity Ratio (%)',
                 data: filteredValues,
-                borderColor: 'rgb(255, 99, 132)', // Red line
+                borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
                 tension: 0.1,
             },
@@ -73,7 +73,7 @@ const RenewableElectricityRatioChart: React.FC<RenewableElectricityRatioChartPro
                 },
                 ticks: {
                     callback: function (value: any) {
-                        return value + '%'; // Add % sign to Y-axis labels
+                        return value + '%';
                     }
                 }
             },
