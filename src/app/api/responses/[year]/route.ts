@@ -14,16 +14,19 @@ function getTokenFromHeader(request: NextRequest): string | null {
     return authHeader.substring(7); // Remove 'Bearer ' prefix
 }
 
-
 // Handles DELETE requests to /api/responses/[year]
 // Deletes the ESG response data for a specific year for the authenticated user.
-export async function DELETE(request: NextRequest, { params }: { params: { year: string } }) {
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: Promise<{ year: string }> }
+) {
     let userId: string | null = null;
     let targetYear: number | null = null;
 
     try {
-        // 1. Validate the year parameter from the URL
-        targetYear = parseInt(params.year, 10);
+        // 1. Await params because it's a Promise now
+        const { year } = await params;
+        targetYear = parseInt(year, 10);
         if (isNaN(targetYear)) {
             return NextResponse.json({ error: 'Invalid year parameter.' }, { status: 400 });
         }
@@ -40,7 +43,6 @@ export async function DELETE(request: NextRequest, { params }: { params: { year:
         }
 
         // 3. Delete the specific record from the database
-        // Prisma's deleteMany allows deleting based on multiple conditions
         const deleteResult = await prisma.eSGResponse.deleteMany({
             where: {
                 userId: userId,
@@ -52,7 +54,7 @@ export async function DELETE(request: NextRequest, { params }: { params: { year:
         if (deleteResult.count === 0) {
             return NextResponse.json(
                 { message: `No ESG data found for year ${targetYear} for this user.` },
-                { status: 404 } // Not Found
+                { status: 404 }
             );
         }
 
