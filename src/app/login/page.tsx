@@ -2,15 +2,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import InputField from '@/components/ui/InputField';
 import Button from '@/components/ui/Button';
 
-const LoginPage: React.FC = () => {
+interface LoginPageProps {
+    searchParams: { [key: string]: string | undefined };
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ searchParams }) => {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -18,7 +21,7 @@ const LoginPage: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const signupSuccess = searchParams.get('signup_success');
+    const signupSuccess = searchParams?.signup_success;
 
     // --- 1. Define Demo Credentials ---
     const DEMO_EMAIL = 'bharat@gmail.com';
