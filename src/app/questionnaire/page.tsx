@@ -259,7 +259,7 @@ const QuestionnairePage: React.FC = () => {
                                                     onClick={() => setActiveYear(year)}
                                                     className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded-md hover:bg-teal-700"
                                                 >
-                                                    Edit
+                                                    View/Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleRemoveYear(year)}
