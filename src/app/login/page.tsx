@@ -2,18 +2,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import InputField from '@/components/ui/InputField';
 import Button from '@/components/ui/Button';
 
-interface LoginPageProps {
-    searchParams: { [key: string]: string | undefined };
-}
-
-const LoginPage: React.FC<LoginPageProps> = ({ searchParams }) => {
+const LoginPage: React.FC = () => {
     const router = useRouter();
+    const searchParams = useSearchParams();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,7 +19,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ searchParams }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const signupSuccess = searchParams?.signup_success;
+    const signupSuccess = searchParams.get('signup_success');
 
     // --- 1. Define Demo Credentials ---
     const DEMO_EMAIL = 'bharat@gmail.com';
@@ -134,7 +132,7 @@ const LoginPage: React.FC<LoginPageProps> = ({ searchParams }) => {
                             <button
                                 type="button"
                                 onClick={handleGuestLoginClick}
-                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                                className="w-full inline-flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-600 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 cursor-pointer"
                             >
                                 Use Demo Credentials
                             </button>

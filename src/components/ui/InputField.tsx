@@ -32,7 +32,7 @@ const InputField: React.FC<InputFieldProps> = ({ label, id, error, type, ...prop
                     <button
                         type="button"
                         onClick={togglePasswordVisibility}
-                        className="absolute inset-y-0 right-0 flex items-center px-4 text-sm font-semibold text-teal-600 hover:text-teal-700"
+                        className="absolute inset-y-0 right-0 flex items-center px-4 text-sm font-semibold text-teal-600 hover:text-teal-700 cursor-pointer"
                         aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
                     >
                         {isPasswordVisible ? 'Hide' : 'Show'}

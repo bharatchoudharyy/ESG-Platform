@@ -213,7 +213,7 @@ const QuestionnairePage: React.FC = () => {
                             <span className="font-medium">Responses saved successfully!</span>
                             <button
                                 onClick={() => router.push('/summary')}
-                                className="mt-3 sm:mt-0 px-4 py-2 bg-white text-teal-600 text-sm font-semibold rounded-md hover:bg-gray-100 focus:outline-none border border-black/50 shadow-sm whitespace-nowrap"
+                                className="mt-3 sm:mt-0 px-4 py-2 bg-white text-teal-600 text-sm font-semibold rounded-md hover:bg-gray-100 focus:outline-none border border-black/50 shadow-sm whitespace-nowrap cursor-pointer"
                             >
                                 View Summary
                             </button>
@@ -235,7 +235,7 @@ const QuestionnairePage: React.FC = () => {
                                                 <span className="font-medium text-gray-900">Financial Year {year}</span>
                                                 <button
                                                     onClick={() => setActiveYear(null)}
-                                                    className="px-3 py-1.5 text-sm text-gray-800 border rounded hover:bg-gray-100"
+                                                    className="px-3 py-1.5 text-sm text-gray-800 border rounded hover:bg-gray-100 cursor-pointer"
                                                 >
                                                     Close
                                                 </button>
@@ -257,13 +257,13 @@ const QuestionnairePage: React.FC = () => {
                                             <div className="flex gap-2">
                                                 <button
                                                     onClick={() => setActiveYear(year)}
-                                                    className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded-md hover:bg-teal-700"
+                                                    className="px-3 py-1.5 text-sm bg-teal-600 text-white rounded-md hover:bg-teal-700 cursor-pointer"
                                                 >
                                                     View/Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleRemoveYear(year)}
-                                                    className="px-3 py-1.5 text-sm border border-red-500 text-red-600 rounded-md hover:bg-red-50"
+                                                    className="px-3 py-1.5 text-sm border border-red-500 text-red-600 rounded-md hover:bg-red-50 cursor-pointer"
                                                 >
                                                     Remove
                                                 </button>
@@ -325,14 +325,14 @@ const QuestionnairePage: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={handleCancelAddYear}
-                                className="px-4 py-2 text-sm font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                                className="px-4 py-2 text-sm font-medium text-gray-800 bg-gray-100 hover:bg-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 cursor-pointer"
                             >
                                 Cancel
                             </button>
                             <button
                                 type="button"
                                 onClick={handleConfirmAddYear}
-                                className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                                className="px-4 py-2 text-sm font-medium text-white bg-teal-600 hover:bg-teal-700 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 cursor-pointer"
                             >
                                 Add Year
                             </button>
