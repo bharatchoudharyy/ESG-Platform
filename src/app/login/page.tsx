@@ -1,14 +1,14 @@
 // src/app/login/page.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import InputField from '@/components/ui/InputField';
 import Button from '@/components/ui/Button';
 
-const LoginPage: React.FC = () => {
+const LoginPageContent: React.FC = () => {
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -150,6 +150,14 @@ const LoginPage: React.FC = () => {
                 </div>
             </div>
         </Layout>
+    );
+};
+
+const LoginPage: React.FC = () => {
+    return (
+        <Suspense fallback={<div>Loading login...</div>}>
+            <LoginPageContent />
+        </Suspense>
     );
 };
 
